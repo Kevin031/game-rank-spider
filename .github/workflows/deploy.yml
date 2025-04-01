@@ -28,13 +28,18 @@ jobs:
         
       - name: Build project
         run: pnpm build
+      - name: 创建部署目录
+        run: |
+          mkdir -p deploy
+          cp -r dist deploy/
+          cp package.json deploy/
         
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@main
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: '-rltgoDzvO'
-          SOURCE: 'package.json,dist/*'
+          SOURCE: 'deploy/'
           REMOTE_HOST: ${{ secrets.SERVER_HOST }}
           REMOTE_USER: 'root'
           TARGET: '/www/wwwroot/game-rank-spider'
