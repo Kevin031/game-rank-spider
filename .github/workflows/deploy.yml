@@ -30,23 +30,16 @@ jobs:
         run: pnpm build
         
       - name: Deploy to server
-        uses: appleboy/scp-action@v0.1.7
+        uses: easingthemes/ssh-deploy@v2.1.6
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "package.json,dist/*"
-          target: "/www/wwwroot/game-rank-spider"
-          strip_components: 0
-          overwrite: true
-          
-      - name: Restart PM2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: '-rltgoDzvO'
+          SOURCE: 'package.json,dist/*'
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+          REMOTE_USER: 'root'
+          TARGET: '/www/wwwroot/game-rank-spider'
+          EXCLUDE: '/node_modules/'
+          SCRIPT_AFTER: |
             cd /www/wwwroot/game-rank-spider
             pnpm install --prod
-            pm2 restart game-rank-spider 
+            pm2 restart game-rank-spider
