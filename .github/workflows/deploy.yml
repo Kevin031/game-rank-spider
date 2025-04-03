@@ -26,15 +26,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build project
-        run: pnpm build
+      - name: Build Spider project
+        run: |
+          cd apps/spider
+          pnpm build
+
+      # - name: Build Server projects
+      #   run: |
+      #     cd apps/server
+      #     pnpm build
+
       - name: 创建部署目录
         run: |
           mkdir -p deploy
-          cp -r dist deploy/
-          cp package.json deploy/
-          cp ecosystem.config.js deploy/
-          cp pnpm-lock.yaml deploy/
+          cp -r apps/spider/dist deploy/apps/spider/
+          cp apps/spider/package.json deploy/apps/spider/
+          cp apps/spider/ecosystem.config.js deploy/apps/spider/
+          cp apps/spider/pnpm-lock.yaml deploy/apps/spider/
 
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@main

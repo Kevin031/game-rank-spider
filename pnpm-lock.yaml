@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  apps/spider:
     dependencies:
       axios:
         specifier: ^1.6.8
