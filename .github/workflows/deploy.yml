@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -48,13 +48,13 @@ jobs:
         uses: easingthemes/ssh-deploy@main
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-rltgoDzvO"
-          SOURCE: "deploy/"
+          ARGS: '-rltgoDzvO'
+          SOURCE: 'deploy/'
           REMOTE_HOST: ${{ secrets.SERVER_HOST }}
-          REMOTE_USER: "root"
-          TARGET: "/www/wwwroot/game-rank-spider"
-          EXCLUDE: "/node_modules/"
+          REMOTE_USER: 'root'
+          TARGET: '/www/wwwroot/game-rank-spider'
+          EXCLUDE: '/node_modules/'
           SCRIPT_AFTER: |
-            cd /www/wwwroot/game-rank-spider
+            cd /www/wwwroot/game-rank-spider/apps/spider
             pnpm install --prod
-            pm2 restart game-rank-spider
+            npm run pm2:restart
